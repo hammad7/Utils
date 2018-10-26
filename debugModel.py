@@ -12,6 +12,7 @@ app.run(host= '0.0.0.0', port=5050)
 
 ## Now when you edit some code in remaining.py just do this:
 imp.reload(remaining) #load into current namespace
+# the line from heavy import model reads model from cache
 from remaining import *
 app.run(host= '0.0.0.0', port=5050)
 
