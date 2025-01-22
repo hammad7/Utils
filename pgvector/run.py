@@ -95,6 +95,7 @@ async def search_similar_embeddings_batch(pool, query_embeddings, top_k=5, sampl
     async def run_query(query_embedding):
         async with pool.acquire() as connection:
             # print(top_k)
+            await connection.execute("SET ivfflat.probes = 400;")  #### increases query time
             return await connection.fetch(sql, query_embedding, top_k)
 
     # Run the queries concurrently using asyncio.gather
@@ -258,7 +259,7 @@ asyncio.run(main())
 #     desciption VARCHAR
 # );
 
-# CREATE INDEX ON public.embeddings USING ivfflat (embedding vector_cosine_ops);
+# CREATE INDEX ON public.embeddings USING ivfflat (embedding vector_cosine_ops) WITH (lists = 1000);;
 # CREATE INDEX ON public.embeddings USING hnsw (embedding vector_cosine_ops);
 ## ivfflat is the indexing method for efficient vector search.
 ## vector_cosine_ops is the operator class for cosine similarity.
